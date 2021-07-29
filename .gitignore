@@ -1,0 +1,4 @@
+*.o
+*.dat
+*.pyc
+*DS_Store*
