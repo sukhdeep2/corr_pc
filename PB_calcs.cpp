@@ -12,7 +12,7 @@ const double r2d=180.0/M_PI;
 void lim_calc_xyz(gal &g1,calc_temp &ct,data_info &data_inf)
 {
   ct.PBx=0;  ct.PBy=0;   ct.PBz=0;
-  if (data_inf.coordinates<3)
+  if (data_inf.coordinates<3||data_inf.coordinates==6) //FIXME
     {
       ct.z_max=g1.redshift+data_inf.p_max;
       ct.z_min=g1.redshift+data_inf.p_min;

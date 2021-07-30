@@ -2,3 +2,7 @@
 *.dat
 *.pyc
 *DS_Store*
+*temp/*
+*temp
+.ipynb_checkpoints/*
+corr_pc

@@ -11,6 +11,7 @@ Targets=main.o corels.o corr.o do_corr.o wl_corr.o bins_calcs.o read_dat.o initi
 
 corr_pc	: $(Targets)
 		$(cc) $(Targets) $(LDFLAGS) -o corr_pc
+		chmod +X corr_pc
 clean:
 	rm $(Targets)
 	@echo Done
@@ -21,7 +22,7 @@ main.o: main.cpp data_def.h corels.h read_dat.h initialization.h outp.h bins_cal
 do_corr.o: do_corr.cpp data_def.h corels.h read_dat.h initialization.h outp.h bins_calcs.h corr.h do_corr.h
 	$(cc) $(CFLAGS) $(LDFLAGS) do_corr.cpp
 
-wl_corr.o: wl_corr.cpp data_def.h corels.h read_dat.h initialization.h outp.h bins_calcs.h coor.h do_corr.h
+wl_corr.o: wl_corr.cpp data_def.h corels.h read_dat.h initialization.h outp.h bins_calcs.h corr.h do_corr.h
 	$(cc) $(CFLAGS) $(LDFLAGS) wl_corr.cpp
 
 bins_calcs.o: bins_calcs.cpp data_def.h calcs.h bins_calcs.h
