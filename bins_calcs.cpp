@@ -319,7 +319,7 @@ void final_calc_mean_projected(bin sd[],bin sr[],bin final[],data_info data_inf)
 void int_calc(bin dat[],data_info data_inf)// integrate over p bins
 {
   double dC=data_inf.p_size;
-  if (data_inf.coordinates!=0)
+  if (data_inf.coordinates!=0&&data_inf.coordinates!=6)
     dC=1;
   for(int i=0;i<data_inf.n_bins;i++)
     {
