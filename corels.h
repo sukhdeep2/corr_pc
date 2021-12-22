@@ -18,3 +18,4 @@ int shape_convergence_corel(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct);/
 
 int shape_shape_corel(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct);
 int shape_density_corel(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct);
+int ED_corel(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct);

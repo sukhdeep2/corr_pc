@@ -241,3 +241,21 @@ int shape_density_corel(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct)
 
   return 0;
 }
+
+int ED_corel(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct)
+{
+  ct.fail=density_density_corel(g1,g2,data_inf,ct);
+
+  if (ct.fail!=0)
+    {
+      return ct.fail;
+    }
+  
+  ct.etheta.val=ED_calc_PB(g1,g2,data_inf,ct);
+  ct.etheta.err=pow(ct.etheta.val,2.0);
+
+  ct.bjk.b[ct.n1].p_bin[ct.n2].data[6].val+=ct.etheta.val;
+  ct.bjk.b[ct.n1].p_bin[ct.n2].data[6].err+=ct.etheta.err;
+
+  return 0;
+}

@@ -21,8 +21,8 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
   int n_gal=0,it=0;
   double *wt,*wt_err;
   int *PB_starts;
-  bool cross_shape_shape=0,read_phi=0,read_kappa=0,read_e=1,read_jk=1,read_z=1,rand_phi=0;
-  double jk_prob=0;
+  bool cross_shape_shape=0,read_phi=0,read_kappa=0,read_e3=0,read_e=1,read_jk=1,read_z=1,rand_phi=0; //read_e3 for ED
+  double jk_prob=0,temp_en=0;
 
   if (data_inf.coordinates==4||data_inf.coordinates==5)
     read_z=0;
@@ -40,11 +40,16 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
     case 4:
       read_e=0;
       if (data_inf.do_SS) //shape sample has e, desnity has kappa
-	read_e=1;
+	      read_e=1;
       else
-	read_kappa=1;
+	      read_kappa=1;
       cross_shape_shape=1;
       break;
+    case 5:
+      read_e=0;
+      if (data_inf.do_SS)
+        read_e3=1;
+      cross_shape_shape=0;
     case 8:
       read_kappa=0;
       read_e=0;
@@ -78,11 +83,11 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
       wt_err=&data_inf.S_wt.err;
       PB_starts=&data_inf.PB_sorted_starts_S;
       if (data_inf.which_corr==4)
-	{
-	  read_e=1;read_kappa=0;
-	}
+    	{
+	      read_e=1;read_kappa=0;
+	    }
       if (data_inf.coordinates==2||data_inf.coordinates==4)
-	read_e=1;
+	      read_e=1;
     }
 
   else if(data_inf.do_DD)
@@ -96,13 +101,13 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
       wt_err=&data_inf.D_wt.err;
       PB_starts=&data_inf.PB_sorted_starts_D;
       if(cross_shape_shape)
-	{
-	  e_f=data_inf.density_e_file;
-	}
-      else
-	{
-	  read_e=0;read_kappa=0;read_phi=0;
-	}
+	    {
+	      e_f=data_inf.density_e_file;
+	    }
+        else
+	    {
+	      read_e=0;read_kappa=0;read_phi=0;read_e3=0;
+	    }
     }
 
   else if(data_inf.do_RsRs)
@@ -118,11 +123,11 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
       n_gal=data_inf.n_shape_rand;
       read_e=0;read_kappa=0;read_phi=0;
       if (data_inf.coordinates==2||data_inf.coordinates==4)
-	{
-	  //read_e=1;
-	  //e_f=data_inf.shape_rand_e_file;
-	  rand_phi=1;
-	}
+      {
+        //read_e=1;
+        //e_f=data_inf.shape_rand_e_file;
+        rand_phi=1;
+      }
     }
 
   else if(data_inf.do_RsRd)
@@ -138,8 +143,8 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
       read_e=0;read_kappa=0;read_phi=0;
       if ((data_inf.coordinates==2||data_inf.coordinates==4)&&data_inf.which_corr==2)
         {
-	  rand_phi=1;
-	}
+	        rand_phi=1;
+	      }
     }
 
   if (n_gal==0)
@@ -174,7 +179,7 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
     jk_prob=-1;
 
 
-  if (read_e||read_kappa||read_phi)
+  if (read_e||read_kappa||read_phi||read_e3)
     {
       data_e.open(e_f.c_str()); // ellipticities
       if(!data_e.is_open()){cout<<"initialisation:: e File not open:"<<e_f<<endl;return 1;}
@@ -229,29 +234,29 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
       g[i].jk_prob=1;//jk_prob
 
       if (data_inf.periodic_box)
-	{
-	  g[i].jk_prob=rand() / (RAND_MAX + 1.);
-	  g[i].DC=g[i].redshift;
-	  g[i].DA=0;
-	}
+      {
+        g[i].jk_prob=rand() / (RAND_MAX + 1.);
+        g[i].DC=g[i].redshift;
+        g[i].DA=0;
+      }
       else
-	{
-	  it=floor(g[i].redshift/data_inf.dz);
-	  g[i].DC=data_inf.dC_z[it];
-	  g[i].DA=data_inf.dA_z[it];
-	}
+      {
+        it=floor(g[i].redshift/data_inf.dz);
+        g[i].DC=data_inf.dC_z[it];
+        g[i].DA=data_inf.dA_z[it];
+      }
 
       if (data_inf.do_jk==0||data_inf.n_jk==0)
-	g[i].jk_prob=0;
+	      g[i].jk_prob=0;
 
       if (w_f!="0")
       	data_wt>>g[i].wt;
 
       if(read_jk)
-	{
-	  data_jk>>g[i].jk;
-	  //g[i].jk_prob=1;
-	}
+      {
+        data_jk>>g[i].jk;
+        //g[i].jk_prob=1;
+      }
       else g[i].jk=-1;
 
       // g[i].e[0]=0;
@@ -264,36 +269,49 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
 
       if(read_e && !read_kappa && !read_phi)
       {
-        g[i].e=new double[2];
+        g[i].e=new double [2];
         data_e>>g[i].e[0]>>g[i].e[1];
         elip_angle(g[i]);
       }
 
+      if(read_e3)
+      {
+        g[i].e=new double [3];
+        data_e>>g[i].e[0]>>g[i].e[1]>>g[i].e[2];
+        temp_en=sqrt(g[i].e[0]*g[i].e[0]+g[i].e[1]*g[i].e[1]+g[i].e[2]*g[i].e[2]);
+        if (temp_en>0)
+        {
+          g[i].e[0]/=temp_en;
+          g[i].e[1]/=temp_en;
+          g[i].e[2]/=temp_en;
+        }
+      }
+
       if(!read_e && read_phi &&!read_kappa)
-	{
-	  data_e>>g[i].phi;
-	}
+        {
+          data_e>>g[i].phi;
+        }
 
       if(read_kappa && !read_e && !read_phi)
         {
           data_e>>g[i].e[0];
         }
       if (rand_phi)
-	{
-	  g[i].phi=rand() / (RAND_MAX + 1.)*M_PI/2-M_PI/2;//g.phi is computed in range [-pi/2,pi/2]
-	}
+        {
+          g[i].phi=rand() / (RAND_MAX + 1.)*M_PI/2-M_PI/2;//g.phi is computed in range [-pi/2,pi/2]
+        }
 
       if(data_inf.periodic_box && data_inf.data_sorted)
-	{
-	  if (*PB_starts<0)
-	    {
-	      if(g[i].redshift-data_inf.periodic_box_size > data_inf.p_min)
-		*PB_starts=i;
-	    }
-	}
+        {
+          if (*PB_starts<0)
+            {
+              if(g[i].redshift-data_inf.periodic_box_size > data_inf.p_min)
+          *PB_starts=i;
+            }
+        }
       g[i].include_prob=0;//galaxies with prob greater than some limit are dropped.. only for random auto correlations
       if (data_inf.do_RsRs||data_inf.do_RsRd)
-	g[i].include_prob=rand() / (RAND_MAX + 1.);
+      	g[i].include_prob=rand() / (RAND_MAX + 1.);
 
       *wt+=g[i].wt;
       *wt_err+=g[i].wt*g[i].wt;
@@ -387,7 +405,7 @@ int read_patch(int patch_id, int &patch_gal_size_max, gal* &patch_gal, data_info
       patch_gal[gal_counter].ra.val_rad=angle_deg_to_rad(ra);
       patch_gal[gal_counter].dec.val_rad=angle_deg_to_rad(dec);
 
-      patch_gal[gal_counter].e=new double[2];
+      patch_gal[gal_counter].e=new double [2];
       patch_gal[gal_counter].e[0]=e[0]/(2.0*R);
       patch_gal[gal_counter].e[1]=e[1]/(2.0*R);
       patch_gal[gal_counter].wt=1.0/(pow(e_err,2.0)+iSN_sq);

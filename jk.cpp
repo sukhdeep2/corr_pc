@@ -133,6 +133,7 @@ void final_jk_bins_nd(bin_jk &bjk, data_info &data_inf)
 
 void corel_jk1(data_info &data_inf,calc_temp &ct, int i)
 {
+  //  cout<<"corel_jk1"<<ct.n1<<" "<<i<<" "<<ct.gjk[0]<<"  "<<ct.gjk[1]<<endl;
       ct.bjk.jk[i].b[ct.n1].num++;
       //ct.bjk.jk[i].b[ct.n1].wt_num+=ct.wt_f.val;
 

@@ -144,7 +144,7 @@ int data_ini(data_info &data_inf,string FileName)//read input file and intialise
     {
       seed(); //seeding random number generator.. function defined in corels.cpp
       //data_inf.xyz_coord=1;
-      if (data_inf.coordinates!=6)
+      if (data_inf.coordinates!=6&&data_inf.coordinates!=7)
 	     {
 	        cout<<" wrong coordinates choice for periodic box:"<< data_inf.periodic_box_size<<" "<<data_inf.coordinates<<endl;
 	         return 1;
@@ -279,6 +279,16 @@ int data_ini(data_info &data_inf,string FileName)//read input file and intialise
       data_inf.z_sep_max=data_inf.bin_r_max*data_inf.H_z[z_idx]/300000.0;
       data_inf.z_sep_min=-1*data_inf.z_sep_max;
     }
+  else if (data_inf.coordinates==6) //sims, xyz, rp-pi
+  {
+    data_inf.z_sep_max=data_inf.p_max+.001;
+    data_inf.z_sep_min=data_inf.p_min-.001;
+  }
+  else if (data_inf.coordinates==7) //sims, xyz, rp-pi
+  {
+    data_inf.z_sep_max=data_inf.bin_r_max;
+    data_inf.z_sep_min=data_inf.z_sep_max*-1;
+  }
   /*  else
     {
       data_inf.z_sep_max=10;
@@ -494,32 +504,34 @@ void choose_corel_func(calc_temp &ct,data_info &data_inf)
     case 1:
       ct.corel=&shape_density_corel;
       if(data_inf.do_SS==1)
-	ct.corel=&shape_shape_corel;
+	      ct.corel=&shape_shape_corel;
       break;
     case 2:
       ct.corel=&shape_shape_corel;
-      if(data_inf.do_SD!=1 && data_inf.do_SS!=1)
-	ct.corel=&shape_density_corel;
-
-      if(data_inf.coordinates==2||data_inf.coordinates==4)
-	{
-	  if(data_inf.do_DRs==1||data_inf.do_SD==1)
-	    ct.corel=&shape_shape_corel;
-	  else
-	    ct.corel=&density_density_corel;
-	}
+        if(data_inf.do_SD!=1 && data_inf.do_SS!=1)
+	        ct.corel=&shape_density_corel;
+        if(data_inf.coordinates==2||data_inf.coordinates==4)
+	      {
+        if(data_inf.do_DRs==1||data_inf.do_SD==1)
+          ct.corel=&shape_shape_corel;
+        else
+          ct.corel=&density_density_corel;
+        }
       break;
     case 3:
       ct.corel=&density_convergence_corel;
+      break;
+    case 4:
+      ct.corel=&shape_convergence_corel;
+      break;
+    case 5:
+      ct.corel=&ED_corel;
       break;
     case 7:
       ct.corel=&shape_density_corel;
       break;
     case 8:
       ct.corel=&shape_shape_corel;
-      break;
-    case 4:
-      ct.corel=&shape_convergence_corel;
       break;
     case 9:
       ct.corel=&shape_convergence_corel;
@@ -541,7 +553,7 @@ void choose_rp_pi_func(calc_temp &ct,data_info &data_inf)
       ct.rp_calc=&rp_calc_sky_projected; //not for coordinates=5. Changed below
     }
 
-  if (data_inf.periodic_box || data_inf.coordinates==6)
+  if (data_inf.periodic_box || data_inf.coordinates==6||data_inf.coordinates==7)
     {
       ct.rp_calc=&rp_calc_PB;
       ct.pi_calc=&pi_calc_PB;
@@ -554,7 +566,7 @@ void choose_rp_pi_func(calc_temp &ct,data_info &data_inf)
 
   ct.r_calc=ct.rp_calc;
 
-  if(data_inf.coordinates==1)
+  if(data_inf.coordinates==1||data_inf.coordinates==7)
     {
       ct.r_calc=&r_mu_calc;
     }

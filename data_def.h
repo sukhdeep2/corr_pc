@@ -29,7 +29,7 @@ struct gal{     // each galaxy
 
   //  angl orient;      //orientation angle of major axis
 
-  double e[2],phi;     //elipticity
+  double *e,phi;     //elipticity
   //  double e0;        //ellipticity defined along major axis
 
   //  var_st redshift; //**********************change to double
@@ -48,11 +48,11 @@ struct data_info{ // to store information about data set, file names, etc.
   int do_jk;
   int data_sorted;//0: no sorting, 1:sorted by z, 2:sorted by dec... for wl sorting by patch, always
   int which_corr; /*0: density-density, 1: ia: shape-density, 2 ia:shape-shape,
-		    3:kappa-density 4: ia: shape-kappa
+		    3:kappa-density 4: ia: shape-kappa 5: ia: ED
 		    7: wl:source shape-lens, 8: wl:source shape-lens shape,
 		    9: wl: shape-convergence, 10: wl: density-density*/
 
-  int coordinates;// 0: rp-pi, 1:r-mu, 2: rp-phi 3: rp, 4: theta-phi, 5:theta 6: xyz
+  int coordinates;// 0: rp-pi, 1:r-mu, 2: rp-phi 3: rp, 4: theta-phi, 5:theta  6: xyz, rp-pi  7: xyz, r-mu
 
   int sig_crit; //0: no sig crit; 1: calc sig crit for each pair, 2: use g1 wt as sig crit
 

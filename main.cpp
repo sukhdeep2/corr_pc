@@ -69,7 +69,7 @@ int main (int argc,char *argv[])
     }
 
   int corr=0;
-  if (data_inf.which_corr<5)
+  if (data_inf.which_corr<6)
     corr=do_corr(data_inf);
   else if (data_inf.which_corr>=7)
     corr=wl_corr(data_inf);

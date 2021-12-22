@@ -1,9 +1,9 @@
-compiler=mpic++ 
+compiler= mpic++
 
-CFLAGS=-c -I/opt/gsl/
+CFLAGS=-c #-I/opt/gsl/
 LDFLAGS=-lgsl -lgslcblas -lgomp -fopenmp
-debug=-g -gdwarf-2
-optimize= -O2
+debug=  #-g4 -gdwarf-2
+optimize=  -O2
 
 cc=$(compiler) $(optimize)  #$(debug)
 
