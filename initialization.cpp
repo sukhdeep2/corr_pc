@@ -246,19 +246,25 @@ int data_ini(data_info &data_inf,string FileName)//read input file and intialise
     }
 
   //  if (!data_inf.xyz_coord){
-  if (data_inf.dz==0)
+  if (data_inf.dz==0 && data_inf.periodic_box==0)
     {
       cout<<"dz=0"<<endl;
       return 1;
     }
-  const unsigned int k=ceil((data_inf.z_max+1)/data_inf.dz)+20;
+    int k_n=1;
+    if (data_inf.periodic_box==0){
+        k_n=ceil((data_inf.z_max+1)/data_inf.dz)+20;
+    }
+    const unsigned int k=k_n;
 //20 is some buffer since we use higher values sometime for interpolation
 
   data_inf.dA_z=new double[k];// make array for angular diameter distance
   data_inf.dC_z=new double[k];
   data_inf.H_z=new double[k];// make array for hubble parameter
 
-  int ch=da_Z(data_inf);	//reading da_z values from file.. look in initialization
+  int ch=0;
+  if (data_inf.periodic_box==0)
+      ch=da_Z(data_inf);	//reading da_z values from file.. look in initialization
 
 
   if(ch==1)return 1;

@@ -27,7 +27,7 @@ using namespace std;
 int main (int argc,char *argv[])
 {
 
-  cout<<"Beginning IA4. Last compiled on: "<<__DATE__<<"  at: "<<__TIME__<<endl;
+  cout<<"Beginning corr_pc. Last compiled on: "<<__DATE__<<"  at: "<<__TIME__<<endl;
   MPI::Init ( argc, argv );
 
   string args[argc];
@@ -52,7 +52,7 @@ int main (int argc,char *argv[])
 
   if(bbye!=0)
     {
-      cout<<"initialisation file not read!! Bye"<<endl;
+      cout<<"Bad initialization!! Bye"<<endl;
       return 1;
     }
 
