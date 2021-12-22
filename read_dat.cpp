@@ -245,7 +245,7 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
 	g[i].jk_prob=0;
 
       if (w_f!="0")
-	data_wt>>g[i].wt;
+      	data_wt>>g[i].wt;
 
       if(read_jk)
 	{
@@ -254,19 +254,20 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
 	}
       else g[i].jk=-1;
 
-      g[i].e[0]=0;
-      g[i].e[1]=0;
+      // g[i].e[0]=0;
+      // g[i].e[1]=0;
       g[i].phi=-10;
 
       g[i].patch=-1;
       if (data_inf.which_corr>=7)
-	data_patch>>g[i].patch;
+	      data_patch>>g[i].patch;
 
       if(read_e && !read_kappa && !read_phi)
-	{
-	  data_e>>g[i].e[0]>>g[i].e[1];
-	  elip_angle(g[i]);
-	}
+      {
+        g[i].e=new double[2];
+        data_e>>g[i].e[0]>>g[i].e[1];
+        elip_angle(g[i]);
+      }
 
       if(!read_e && read_phi &&!read_kappa)
 	{
@@ -386,6 +387,7 @@ int read_patch(int patch_id, int &patch_gal_size_max, gal* &patch_gal, data_info
       patch_gal[gal_counter].ra.val_rad=angle_deg_to_rad(ra);
       patch_gal[gal_counter].dec.val_rad=angle_deg_to_rad(dec);
 
+      patch_gal[gal_counter].e=new double[2];
       patch_gal[gal_counter].e[0]=e[0]/(2.0*R);
       patch_gal[gal_counter].e[1]=e[1]/(2.0*R);
       patch_gal[gal_counter].wt=1.0/(pow(e_err,2.0)+iSN_sq);
