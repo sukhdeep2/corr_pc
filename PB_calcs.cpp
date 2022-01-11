@@ -114,6 +114,9 @@ double ED_calc_PB(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct)
     cos_ang=g1.e[0]*xyz[0]+g1.e[1]*xyz[1]+g1.e[2]*xyz[2];
   
   cos_ang/=xyz_norm; //make sure g.e is normalized as well
-  // cout<<"doing ED calc "<<cos_ang<<"  "<<xyz_norm<<"  "<<endl;
+  if (abs(cos_ang)>1){
+    cout<<"doing ED calc "<<cos_ang<<"  "<<xyz_norm<<"  "<<endl;
+  }
+  //  cout<<"doing ED calc "<<cos_ang<<endl;
   return cos_ang*cos_ang;
 }

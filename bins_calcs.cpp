@@ -182,10 +182,22 @@ void final_calc_bins(bin sd[], bin sr[],bin dr[],bin rr[], bin final[], data_inf
 
 		  double sd_err2= sd_sum_sq - (sd_val_sq/sd_num); //variance
 		  double sr_err2= sr_sum_sq - (sr_val_sq/sr_num);
+		  double sd_val_norm=0;
+		  double sr_val_norm=0;
+		  if (data_inf.which_corr==5 && j==6)
+                    {
+		      if(sd_num>0){
+			sd_val_norm=(sd_val/sd_wt_num);
+		      }
+		      sd_val_norm-=1./3;
+                    }
 
-		  double sd_val_norm=(sd_val/rr_wt_num)*(RR_wt/SD_wt); //SD/RR
-		  double sr_val_norm=(sr_val/rr_wt_num)*(RR_wt/SR_wt); //SR/RR
-                  double sd_val_norm2=(sd_val); //don't take mean here. Will give higher weight to noise.
+		  else{
+		    sd_val_norm=(sd_val/rr_wt_num)*(RR_wt/SD_wt); //SD/RR
+		    sr_val_norm=(sr_val/rr_wt_num)*(RR_wt/SR_wt); //SR/RR
+		  }
+
+		  double sd_val_norm2=(sd_val); //don't take mean here. Will give higher weight to noise.
 		  //to deal with diviion with zero
                   if(sd_num==0)
                     {
