@@ -156,9 +156,12 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
   ifstream data_p,data_z,data_e,data_wt,data_jk,data_patch;
   data_p.open(p_f.c_str());// RA-Dec. sky positions
   if (read_z)data_z.open(z_f.c_str()); // redshift
-  if(data_inf.do_jk && jk_f!="0")data_jk.open(jk_f.c_str()); //jackknife
+  if(jk_f!="0")data_jk.open(jk_f.c_str()); //jackknife
   else {read_jk=0; cout<<"no jk file given"<<endl;}
 
+  if(!data_inf.do_jk){
+    read_jk=0;}
+  
   if(w_f!="0")
     {
       cout<<"doing weighted calcs"<<endl;
@@ -173,7 +176,7 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
   if(!data_p.is_open()){cout<<"initialisation::pos File not open: "<<p_f<<endl;return 1;}
   if(read_z&&!data_z.is_open()){cout<<"initialisation::z File not open:"<<z_f<<endl;return 1;}
 
-  if((data_inf.do_jk)&&(!data_jk.is_open())&&read_jk){cout<<"initialisation::jk File not open: "<<w_f<<data_inf.do_SS<<data_inf.do_DD<<endl;return 1;}
+  if(data_inf.do_jk && (!data_jk.is_open()) && read_jk){cout<<"initialisation::jk File not open: "<<w_f<<data_inf.do_SS<<data_inf.do_DD<<data_inf.do_jk<<endl;return 1;}
 
   if (data_inf.do_jk && !read_jk)
     jk_prob=-1;
@@ -323,7 +326,7 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
       cout<<"gal data reading ended unexpectedly: "<<i<<"   "<<n_gal<<endl;
       if(!data_p.good()){cout<<"initialisation::pos File not open: "<<p_f<<endl;}
       if(!data_z.good()&&read_z){cout<<"initialisation::z File not open:"<<z_f<<endl;}
-      if(!data_jk.good()){cout<<"initialisation::jk File not open: "<<jk_f<<endl;}
+      if(data_inf.do_jk && !data_jk.good()){cout<<"initialisation::jk File not open: "<<jk_f<<endl;}
       if(!data_wt.good()){cout<<"initialisation::wt File not open:"<<w_f<<endl;}
       if(!data_e.good() && (read_e||read_phi||read_kappa)){cout<<"initialisation::e File not open:"<<w_f<<endl;}
       //      cout<<"do_DD= "<<data_inf.do_DD<<"   do_RR= "<<data_inf.do_RR<<"   do_SS= "<<data_inf.do_SS<<endl;
