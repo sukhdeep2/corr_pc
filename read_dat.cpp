@@ -156,7 +156,7 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
   ifstream data_p,data_z,data_e,data_wt,data_jk,data_patch;
   data_p.open(p_f.c_str());// RA-Dec. sky positions
   if (read_z)data_z.open(z_f.c_str()); // redshift
-  if(jk_f!="0")data_jk.open(jk_f.c_str()); //jackknife
+  if(data_inf.do_jk && jk_f!="0")data_jk.open(jk_f.c_str()); //jackknife
   else {read_jk=0; cout<<"no jk file given"<<endl;}
 
   if(w_f!="0")

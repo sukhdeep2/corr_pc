@@ -103,7 +103,12 @@ double ED_calc_PB(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct)
   double xyz[3];
   xyz[0]=g1.ra.val_deg-(g2.ra.val_deg+data_inf.periodic_box_size*ct.PBx);
   xyz[1]=g1.dec.val_deg-(g2.dec.val_deg+data_inf.periodic_box_size*ct.PBy);
-  xyz[2]=((g2.redshift+data_inf.periodic_box_size*ct.PBz)-g1.redshift);
+  xyz[2]=g1.redshift- (g2.redshift+data_inf.periodic_box_size*ct.PBz);
+  
+
+  //xyz[0]=g1.ra.val_deg-g2.ra.val_deg;
+  //xyz[1]=g1.dec.val_deg-g2.dec.val_deg;
+  //xyz[2]=g2.redshift-g1.redshift;
   
   double xyz_norm=sqrt(xyz[0]*xyz[0]+xyz[1]*xyz[1]+xyz[2]*xyz[2]);
   double cos_ang=-10;
@@ -114,9 +119,16 @@ double ED_calc_PB(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct)
     cos_ang=g1.e[0]*xyz[0]+g1.e[1]*xyz[1]+g1.e[2]*xyz[2];
   
   cos_ang/=xyz_norm; //make sure g.e is normalized as well
+
+  /*
   if (abs(cos_ang)>1){
     cout<<"doing ED calc "<<cos_ang<<"  "<<xyz_norm<<"  "<<endl;
-  }
-  //  cout<<"doing ED calc "<<cos_ang<<endl;
+    }
+
+    cout<<"doing ED calc "<<cos_ang<<endl;
+     cout<<"doing ED calc dis: "<<xyz_norm<<endl;
+     cout<<"doing ED calc dis: "<<xyz[0]<<"  "<<xyz[1]<<"  "<<xyz[2]<<endl;
+     cout<<"doing ED calc dis: "<<g2.e[0]<<"  "<<g2.e[1]<<"  "<<g2.e[2]<<endl;
+*/
   return cos_ang*cos_ang;
 }
