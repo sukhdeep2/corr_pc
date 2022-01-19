@@ -150,7 +150,7 @@ int data_ini(data_info &data_inf,string FileName)//read input file and intialise
 	         return 1;
 	     }
       data_inf.dz=0;
-      cout<<"doing xyz box: size="<<data_inf.periodic_box_size<<"   periodic="<<data_inf.periodic_box<<endl;
+      cout<<"doing xyz box: size="<<data_inf.periodic_box_size<<"   periodic="<<data_inf.periodic_box<<" njk: "<<data_inf.n_jk_regions<<endl;
       if (data_inf.bin_r_max>data_inf.periodic_box_size||data_inf.p_max>data_inf.periodic_box_size)
 	{
 	  cout<<"bin limits > the periodic box size"<<endl;
@@ -196,9 +196,9 @@ int data_ini(data_info &data_inf,string FileName)//read input file and intialise
     data_inf.include_prob_RR=sqrt(sqrt(double(data_inf.n_density)/data_inf.n_density_rand*double(data_inf.n_shape)/data_inf.n_shape_rand))*1.0;
 
   cout<<"RsRd same  "<<data_inf.RsRd_same<<"  RR-prob:"<<data_inf.include_prob_RR<<endl;
-  if(data_inf.do_jk!=0){
+  //if(data_inf.do_jk!=0){
     jk_initilize(data_inf);
-  }
+    //}
 
   if (data_inf.which_corr>=7)
     {

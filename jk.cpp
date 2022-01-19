@@ -21,12 +21,16 @@ const double r2d=180.0/pi;
 
 void jk_initilize(data_info &data_inf)
 {
+  data_inf.n_jk=data_inf.n_jk_regions;
+  if (data_inf.do_jk==0){
+    return;}
+  cout<<"jk_ini: "<<data_inf.n_jk_regions<<endl;
   data_inf.jk_regions=new int [data_inf.n_jk_regions];
   for (int i=0;i<data_inf.n_jk_regions;i++)
     {
        data_inf.jk_regions[i]=i;
     }
-  data_inf.n_jk=data_inf.n_jk_regions;
+  
   if (data_inf.do_jk>1)
   {
     data_inf.n_jk=data_inf.n_jk_regions*(data_inf.n_jk_regions+1)/2;
