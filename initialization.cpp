@@ -236,8 +236,8 @@ int data_ini(data_info &data_inf,string FileName)//read input file and intialise
       data_inf.z_sep_max=9;
     }
   //data_inf.z_sep_min=0;
-  data_inf.PB_sorted_starts_S=-1;
-  data_inf.PB_sorted_starts_D=-1;
+  data_inf.PB_sorted_starts_S=0;
+  data_inf.PB_sorted_starts_D=0;
 
   if (data_inf.data_sorted==0)
     {
@@ -271,22 +271,22 @@ int data_ini(data_info &data_inf,string FileName)//read input file and intialise
 
   if (data_inf.coordinates==0)
     {
-      data_inf.z_sep_max=data_inf.p_max*data_inf.H_z[z_idx]/300000.0;
-      data_inf.z_sep_min=data_inf.p_min*data_inf.H_z[z_idx]/300000.0;
+      data_inf.z_sep_max=data_inf.p_max*data_inf.H_z[z_idx]/300000.0+0.001;
+      data_inf.z_sep_min=data_inf.p_min*data_inf.H_z[z_idx]/300000.0-0.001;
     }
   else if (data_inf.coordinates==1)
     {
-      data_inf.z_sep_max=data_inf.bin_r_max*data_inf.H_z[z_idx]/300000.0;
+      data_inf.z_sep_max=data_inf.bin_r_max*data_inf.H_z[z_idx]/300000.0+0.001;
       data_inf.z_sep_min=-1*data_inf.z_sep_max;
     }
   else if (data_inf.coordinates==6) //sims, xyz, rp-pi
   {
-    data_inf.z_sep_max=data_inf.p_max+.001;
-    data_inf.z_sep_min=data_inf.p_min-.001;
+    data_inf.z_sep_max=data_inf.p_max+1;
+    data_inf.z_sep_min=data_inf.p_min-1;
   }
   else if (data_inf.coordinates==7) //sims, xyz, rp-pi
   {
-    data_inf.z_sep_max=data_inf.bin_r_max;
+    data_inf.z_sep_max=data_inf.bin_r_max+0.1;
     data_inf.z_sep_min=data_inf.z_sep_max*-1;
   }
   /*  else

@@ -462,9 +462,9 @@ void jk_final2D(bin bins_final_jk[] ,bin bins_final[],jackknife jk_final[],data_
 }
 
 
-int re_bin(bin ss[], data_info &data_inf)
+void re_bin(bin ss[], data_info &data_inf)
 {
-  if(data_inf.n_p_bin<=1)return 0;
+  if(data_inf.n_p_bin<=1)return ;
   for(int i=0;i<data_inf.n_bins;i++)
     {
       for(int k=0;k<data_inf.n_p_bin;k++)

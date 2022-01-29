@@ -2,10 +2,10 @@ compiler= mpic++
 
 CFLAGS=-c #-I/opt/gsl/
 LDFLAGS=-lgsl -lgslcblas -lgomp -fopenmp
-debug=  #-g4 -gdwarf-2
+debug= -g2 -gdwarf-2
 optimize=  -O2
 
-cc=$(compiler) $(optimize)  #$(debug)
+cc=$(compiler) $(optimize)  $(debug)
 
 Targets=main.o corels.o corr.o do_corr.o wl_corr.o bins_calcs.o read_dat.o initialization.o outp.o calcs.o jk.o sky_calcs.o PB_calcs.o
 

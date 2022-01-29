@@ -341,17 +341,17 @@ long corels2(gal g1[],gal g2[], bin_jk &bjk,data_info &data_inf)
     long starts=0,starts_PB=data_inf.PB_sorted_starts_D;
     if (data_inf.do_SRs||data_inf.do_RsRs||data_inf.do_RsRd)
       {
-	starts_PB=data_inf.PB_sorted_starts_Rs;
+	      starts_PB=data_inf.PB_sorted_starts_Rs;
       }
 
     double dz=0;//(g1[begin].redshift.val-g2[starts].redshift.val);
     //    cout<<"corels2: starts_pb= "<<starts_PB<<endl;
-#pragma omp for schedule(dynamic,omp_num)//collapse(2) //schedule(dynamic,10) nowait
+    #pragma omp for schedule(dynamic,omp_num)//collapse(2) //schedule(dynamic,10) nowait
     for (int i=0;i<n_num1;i++)
           {
 	    if (g1[i].include_prob>ct.include_prob_max)
 	      {
-		continue;
+		      continue;
 	      }
 	    lim_calc(g1[i],ct,data_inf);
 	    xt=ct.PBx;//max(0,ct.PBx);
@@ -360,68 +360,65 @@ long corels2(gal g1[],gal g2[], bin_jk &bjk,data_info &data_inf)
 
 	    if (data_inf.data_sorted==1)
 	      {
-		dz=(g2[starts].redshift);
-		while ((dz>ct.z_max || dz<ct.z_min)&&starts<n_num2)
-		  {
-		    starts++;
-		    dz=(g2[starts].redshift);
-		  }
+        dz=(g2[starts].redshift);
+        while ((dz>ct.z_max || dz<ct.z_min)&&starts<n_num2)
+          {
+            starts++;
+            dz=(g2[starts].redshift);
+          }
 	      }
 	    if (data_inf.data_sorted==2)
-              {
-                dz=(g2[starts].dec.val_deg);
-                while ((dz>ct.dec_max || dz<ct.dec_min)&&starts<n_num2)
-                  {
-                    starts++;
-                    dz=(g2[starts].dec.val_deg);
-                  }
-              }
+        {
+          dz=(g2[starts].dec.val_deg);
+          while ((dz>ct.dec_max || dz<ct.dec_min)&&starts<n_num2)
+            {
+              starts++;
+              dz=(g2[starts].dec.val_deg);
+            }
+        }
 
 	    ct.PBy=yt>0;
 	    for(int yi=0;yi<=abs(yt);yi++)
 	      {
-		ct.PBx=xt>0;
-		for(int xi=0;xi<=abs(xt);xi++)
-		  {
-		    ct.PBz=zt>0;
-		    for (int zi=0;zi<=abs(zt);zi++)
-		      {
-			if (ct.PBz==0)
-			  j=starts;
+        ct.PBx=xt>0;
+        for(int xi=0;xi<=abs(xt);xi++)
+          {
+            ct.PBz=zt>0;
+            for (int zi=0;zi<=abs(zt);zi++)
+              {
+              if (ct.PBz==0)
+                j=starts;
 
-			else if (ct.PBz<0)
-			  {
-			    //			    starts_PB=data_inf.PB_sorted_starts;
-			    if (data_inf.data_sorted==1 && starts_PB<n_num2)
-			      {
-				dz=(g2[starts_PB].redshift+ct.PBz*data_inf.periodic_box_size);
-				while ((dz>ct.z_max || dz<ct.z_min)&&starts_PB<(n_num2-1))
-				  {
-				    starts_PB++;
-				    dz=(g2[starts_PB].redshift+ct.PBz*data_inf.periodic_box_size);
-				  }
-			      }
-			    j=starts_PB;
-			  }
-			else
-			  j=0;
+              else if (ct.PBz<0)
+                {
+                  //			    starts_PB=data_inf.PB_sorted_starts;
+                  if (data_inf.data_sorted==1 && starts_PB<n_num2)
+                    {
+                    dz=(g2[starts_PB].redshift+ct.PBz*data_inf.periodic_box_size);
+                    while ((dz>ct.z_max || dz<ct.z_min)&&starts_PB<(n_num2-1))
+                      {
+                        starts_PB++;
+                        dz=(g2[starts_PB].redshift+ct.PBz*data_inf.periodic_box_size);
+                      }
+                      if (starts_PB<0)starts_PB=0;
+                    }
+			            j=starts_PB;
+			          }
+			        else
+			          j=0;
 
-			PB+=(xi+yi+zi)>0;
+			PB+=(xi+yi+zi)>0; //this is likely to be affected by race conditions.
 			//double start2=omp_get_wtime();
 			while(j<n_num2)
 			  {
 			    if (g2[j].include_prob>ct.include_prob_max)
-			    {j+=1;continue;}
+			      {j+=1;continue;}
 			    j+=do_pair(g1[i],g2[j],ct,data_inf,n_out1,n_total1,n_num2);
 			  }
-			/*
-			if (i%10000==0)
-			  cout<<"corels2: "<<i<<"  "<<omp_get_wtime()-start<<"  "<<n_total1<<endl;
-			*/
 			ct.PBz--;
-		      }
-		    ct.PBx--;
 		  }
+		  ct.PBx--;
+		}
 		ct.PBy--;
 	      }
 	  }

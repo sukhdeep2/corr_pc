@@ -27,6 +27,6 @@ void jk_final(bin bins_final_jk[] ,bin bins_final[],jackknife jk_final[],data_in
 
 void jk_final2D(bin bins_final_jk[] ,bin bins_final[],jackknife jk_final[],data_info data_inf);
 
-int re_bin(bin ss[], data_info &data_inf);
+void re_bin(bin ss[], data_info &data_inf);
 
 void final_calc_mean_projected(bin sd[],bin sr[],bin final[],data_info data_inf);
