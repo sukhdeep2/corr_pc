@@ -136,24 +136,24 @@ int shape_shape_corel(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct)
   elip_rotate(g2.e,ct.e_new_j,ct.theta);
   //                elip_rotate(g2.e0,e_new_j,theta-g2.phi);
 
-  if(data_inf.coordinates==2||data_inf.coordinates==4)
-    {//use the galaxy other than one used in phi bin calc
-      if(data_inf.g_with_shape==1)
+  //  if(data_inf.coordinates==2||data_inf.coordinates==4)
+  // {//use the galaxy other than one used in phi bin calc
+      if(data_inf.g_with_shape==2)
 	{
 	  ct.ep.val=ct.sig_crit*ct.wt_f.val*(ct.e_new_j[0]); //e+
 	  ct.ep.err=pow(ct.wt_f.val*ct.e_new_j[0],2);
 	  ct.etheta.val=ephi_calc(g2,ct);
 	  ct.etheta.err=pow(ct.etheta.val,2.0);
 	}
-      else if(data_inf.g_with_shape==2)
+      else if(data_inf.g_with_shape==1)
 	{
 	  ct.ep.val=ct.sig_crit*ct.wt_f.val*(ct.e_new_i[0]); //e+
           ct.ep.err=pow(ct.wt_f.val*ct.e_new_i[0],2);
 	  ct.etheta.val=ephi_calc(g1,ct);
           ct.etheta.err=pow(ct.etheta.val,2.0);
 	}
-    }
-  else
+      //}
+      /* else
     {
       ct.ep.val=ct.sig_crit*ct.wt_f.val*(ct.e_new_i[0]+ct.e_new_j[0])/2.0; //e+
       ct.ep.err=pow(ct.wt_f.val*ct.e_new_i[0]/2.0,2)+pow(ct.wt_f.val*ct.e_new_j[0]/2.0,2); //e+
@@ -167,7 +167,7 @@ int shape_shape_corel(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct)
       ct.etheta.err=pow(ct.etheta.val,2.0)+pow(e2,2.0);
       ct.etheta.val+=e2;
   }
-
+      */
   ct.epp.val=ct.sig_crit*ct.wt_f.val*(ct.e_new_i[0]*ct.e_new_j[0]); //e++
   ct.epp.err=pow(ct.wt_f.val*(ct.e_new_i[0]*ct.e_new_j[0]),2); //e++
   ct.exx.val=ct.sig_crit*ct.wt_f.val*(ct.e_new_i[1]*ct.e_new_j[1]); // eXX
