@@ -1,0 +1,15 @@
+Due to some compiler mismatches, the code sometimes doesnot compile on vera. 
+
+The recommended method for installation is to make a conda environment, 
+download g++ compilers and then compile the code using those. 
+
+# create new conda environment and activate it
+
+conda create --name corr_pc
+conda activate corr_pc
+
+#install gxx package
+conda install conda install -y gxx_linux-64
+
+#compile corr_pc
+make

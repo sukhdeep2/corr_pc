@@ -81,9 +81,9 @@ int density_convergence_corel(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct)
   ct.fail=density_density_corel(g1,g2,data_inf,ct);
   if (ct.fail!=0)
       return ct.fail;
-  if(data_inf.g_with_shape==2)//always assume convergence to be density ???
+  if(data_inf.g_with_shape==1)
     ct.ep.val=ct.wt_f.val*g1.e[0]*ct.sig_crit;
-  else if(data_inf.g_with_shape==1)
+  else if(data_inf.g_with_shape==2)
     ct.ep.val=ct.wt_f.val*g2.e[0]*ct.sig_crit;
   ct.bjk.b[ct.n1].p_bin[ct.n2].data[1].val+=ct.ep.val;
 

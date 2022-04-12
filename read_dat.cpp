@@ -33,9 +33,11 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
       read_e=0;
       break;
     case 3:
-      cross_shape_shape=1;
-      if (data_inf.do_SS) //desnity has kappa
-        read_e=0;
+      cross_shape_shape=0;
+      read_e=0;
+      read_kappa=1;
+      //if (data_inf.do_SS) //shape has kappa
+      // read_e=0;
       break;
     case 4:
       read_e=0;
@@ -297,6 +299,7 @@ int read_data(gal g[],data_info &data_inf) // read data sets from files
 
       if(read_kappa && !read_e && !read_phi)
         {
+	  g[i].e=new double [1];
           data_e>>g[i].e[0];
         }
       if (rand_phi)
