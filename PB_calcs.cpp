@@ -76,7 +76,7 @@ void RR_PB_calc(bin rr[], data_info &data_inf) //periodic box RR pair count expe
           if (data_inf.coordinates==6)
             volume=area*(rr[i].p_bin[k].p_max-rr[i].p_bin[k].p_min);
           else if(data_inf.coordinates==7)
-            volume=area; //FIXME
+            volume=area/2*(rr[i].p_bin[k].p_max-rr[i].p_bin[k].p_min); //FIXME
           rr[i].p_bin[k].wt_num=volume/total_volume; //no need to use pair count. SD_wt (or SS_wt) will do the job
 	         rr[i].p_bin[k].num=1;
 	  //	  cout<<"RR_PB_calc  "<<volume<<"   "<<total_volume<<"    "<<rr[i].p_bin[k].wt_num<<endl;
