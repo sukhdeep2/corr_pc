@@ -95,8 +95,10 @@ int shape_convergence_corel(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct) /
   ct.fail=density_density_corel(g1,g2,data_inf,ct);
   if (ct.fail!=0)
     return ct.fail;
-
-  ct.theta=ct.angle_orient_axis(g1,g2);  //angle of line joining centre of two galaxies with x (RA) axis
+  if (data_inf.periodic_box)
+    ct.theta = atan2(ct.temp[1], ct.temp[0]);
+  else
+    ct.theta=ct.angle_orient_axis(g1,g2);  //angle of line joining centre of two galaxies with x (RA) axis
   if(data_inf.g_with_shape==2)
     {
       elip_rotate(g2.e,ct.e_new_i,ct.theta); //lensing... g2 is the source
@@ -128,7 +130,10 @@ int shape_shape_corel(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct)
       return ct.fail;
     }
 
-  ct.theta=ct.angle_orient_axis(g1,g2);  //angle of line joining centre of two galaxies with x (RA) axis
+  if (data_inf.periodic_box)
+    ct.theta = atan2(ct.temp[1], ct.temp[0]);
+  else
+    ct.theta=ct.angle_orient_axis(g1,g2);  //angle of line joining centre of two galaxies with x (RA) axis
 
   elip_rotate(g1.e,ct.e_new_i,ct.theta);   //rotation when e1 and e2 are known
   //	    elip_rotate(g1.e0,e_new_i,theta-g1.phi);	//rotation when e0 and orientation angle known
@@ -212,7 +217,10 @@ int shape_density_corel(gal &g1,gal &g2,data_info &data_inf,calc_temp &ct)
       return ct.fail;
     }
 
-  ct.theta=ct.angle_orient_axis(g1,g2);  //angle of line joining centre of two galaxies with x (RA) axis
+  if (data_inf.periodic_box)
+    ct.theta = atan2(ct.temp[1], ct.temp[0]);
+  else
+    ct.theta=ct.angle_orient_axis(g1,g2); //angle of line joining centre of two galaxies with x (RA) axis
   if (data_inf.g_with_shape==2)
     elip_rotate(g2.e,ct.e_new_i,ct.theta); //lensing... g2 is the source
   else
